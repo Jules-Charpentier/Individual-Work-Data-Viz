@@ -99,10 +99,12 @@
       <h3>Sources</h3>
 
       <p>
-        Provide sources for the dataset, any code used, and design inspirations here. Dishonesty will result in a 0 for the assignment or the <strong>entire course</strong>.
-      Robin Wilson’s blog
-      OpenstreetMap
-      Datacamp
+       For scatter plot : http://www.python-simple.com/python-matplotlib/scatterplot.php <br/>
+      To Download Data : <br/>
+      Data World site <br/>
+      Reddit Data set site <br/>
+      For Cross TAB : https://www.stat4decision.com/fr/tri-croise-r-python/ <br/>
+      
         Code : <br/>
  import numpy as np <br/>
  import pandas as pd <br/>
