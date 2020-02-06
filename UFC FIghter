@@ -71,26 +71,28 @@
     <div class="container content">
       <!-- modify if necessary (move visualizations in separate pages) -->
       <h2 id="viz1">Visualization 1</h2>
-
-      
+     
+     <img src="https://raw.githubusercontent.com/Jules-Charpentier/Individual-Work-Data-Viz/master/%20UFC-Fighter-rate-of-win.png">
+      </img>
+     
 
       <h3>Interpretation</h3>
 
       <p>
-        Provide a brief discussion of how to interpret this visualization. Legends provided with the visualization can be self-explanatory, keep it short.
-     By combining the location of deaths related to cholera with locations of the water pumps, the map is able to show us that the majority were clustered around public water pump.
-the visualization show clearly a connection between location of water pump and the cluster of deaths (people was contaminated by public water).
+        By combining the type of win in UFC (by KO, TKO, Submission or Decision) of each winner and their origin countries for the most representative ones in that sport, 
+        I calculated their rate of win according to the type of win and their origins.
+        The visualization shows clearly that according to their origin countries, fighter are specialized in a certain type of win.
       </p>
 
       <h3>Discussion</h3>
 
-      <p> I struggle to filter my data according to the number of time a fighter from a country fights. I had to remove manually every country whose their fighter origin from had less than 50 fights, 
+      <p> I had a lot of work to clean my data. I struggled to filter my data according to the number of time a fighter from a country won. I had to remove manually every country whose their fighter origin from had less than 50 fights, 
         because i only wanted countries that were enough representatives in the number of fight. Moreover i could not create my scatter plot directly from my crosstab i created, so i had to recreate a board manually
-        of each country rate of win to represent it. My challenge was also to represent the rate of win because i only have the winner with his type of win and it's origin country but for example American are way more presents
-        in that sport so obviously they would have been first in each type of win so i had to calculate the ratio. 
-        I discover how to create a cross tab that was an interesting way of vizualize my data. 
-        I was impressed by the the scatter type of graph because it is very complete and you can easily make it understable. 
-        You have several colors available so you can represent many variables.
+        to represent it. My challenge was also to represent the rate of win because i only had the winner with his type of win and its origin country by merging 2 data files but for example Americans are way more present
+        in that sport so obviously they would have been first in each type of win  in using only their number of win according to the type of win that is why i had to calculate the ratio of win. 
+        I discover how to create a cross tab that was an interesting way to visualize my data. 
+        I was impressed by the scatter type of graph because it is very complete and you can easily make it understable. 
+        You have several colors and markers available so you can represent many variables.
       
       </p>
 
@@ -102,45 +104,193 @@ the visualization show clearly a connection between location of water pump and t
       OpenstreetMap
       Datacamp
         Code :
- import folium
+ import numpy as np
  import pandas as pd
+ from pandas import Series, DataFrame, read_html
+ import matplotlib.pyplot as plt
+ 
+ #Download the Data
+ file="/Users/jules/Downloads/ALL UFC FIGHTERS 2_23_2016 SHERDOG.COM.xlsx"
+sheet="Sheet1"
 
-deaths=pd.read_csv('/Users/otb/Desktop/deaths.csv')
-deaths
-# Rename your columns
+xl=pd.ExcelFile(file)
+UFC_Fighter=xl.parse(sheet)
 
-newcols = {
-    'Death': 'death_count',
-    'X coordinate': 'x_latitude', 
-    'Y coordinate': 'y_longitude' 
-    }
+file2="/Users/jules/Downloads/ALL UFC FIGHTS 2_23_2016 SHERDOG.COM.xlsx"
+sheet1="Sheet1"
 
-deaths.rename(columns=newcols, inplace=True)
+xls=pd.ExcelFile(file2)
+UFC_Fights=xls.parse(sheet1)
+ 
+ # Analyze the type of win and remove the useless ones 
+ 
+ UFC_Fights['method'].value_counts()
+ 
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'NC')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Caceres Failed Drug Test')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Overturned by Commission')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Hoffman Failed Drug Test')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Overturned by State Commission')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'DQ')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'Draw')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'Technical')]
+ 
+ # Remove the useless Data 
+ 
+ del UFC_Fights['pageurl'],
+del UFC_Fights['eid'],
+del UFC_Fights['mid'],
+del UFC_Fights['event_name'],
+del UFC_Fights['event_org'],
+del UFC_Fights['event_place'],
+del UFC_Fights['f1pageurl'],
+del UFC_Fights['f2pageurl'],
+del UFC_Fights['f1result'],
+del UFC_Fights['f2result'],
+del UFC_Fights['ref'],
+del UFC_Fights['f1fid'],
+del UFC_Fights['f2fid'],
+del UFC_Fights['round'],
+del UFC_Fights['time']
 
-locations = deaths[['x_latitude', 'y_longitude']]
-deaths_list = locations.values.tolist()
-deaths_list 
-map = folium.Map(location=[51.5132119,-0.13666], tiles='Stamen Toner', zoom_start=18)
-for point in range(0, len(deaths_list)):
-    folium.CircleMarker(deaths_list[point], radius=18, color='red', fill=True, fill_color='red', opacity = 0.4).add_to(map)
-map
-        
-# Import the data
-pumps = pd.read_csv('/Users/otb/Desktop/pumps.csv')
+# Rename Column in order to merge files
 
-# Subset the DataFrame 
-locations_pumps = pumps[['X coordinate', 'Y coordinate']]
+UFC_Fights.rename(columns={'f1name': 'name'}, inplace=True)
+UFC = DataFrame.merge(UFC_Fights, UFC_Fighter[['name','country']],on='name', how='inner')
+DataFrame.drop_duplicates(UFC)
 
-# Transform the DataFrame to list of lists 
-pumps_list = locations_pumps.values.tolist()
+# Have a look at the number of time a country appears and remove the ones with less than 49 fights
 
-# Create a for loop (use previous map)
-map1 = map
-for point in range(0, len(pumps_list)):
-    folium.Marker(pumps_list[point], popup=pumps['Pump Name'][point]).add_to(map1)
-map1
+UFC['country'].value_counts()
 
-#output Visualization on the link
+UFC= UFC[(UFC['country'] != 'Ecuador')]
+UFC= UFC[(UFC['country'] != 'Venezuela')]
+UFC= UFC[(UFC['country'] != 'Finland')]
+UFC= UFC[(UFC['country'] != 'Cuba')]
+UFC= UFC[(UFC['country'] != 'Argentina')]
+UFC= UFC[(UFC['country'] != 'Armenia')]
+UFC= UFC[(UFC['country'] != 'Bulgaria')]
+UFC= UFC[(UFC['country'] != 'Mongolia')]
+UFC= UFC[(UFC['country'] != 'Philippines')]
+UFC= UFC[(UFC['country'] != 'Norway')]
+UFC= UFC[(UFC['country'] != 'Afghanistan')]
+UFC= UFC[(UFC['country'] != 'Chile')]
+UFC= UFC[(UFC['country'] != 'Latvia')]
+UFC= UFC[(UFC['country'] != 'Columbia')]
+UFC= UFC[(UFC['country'] != 'Iran, Islamic Republic of')]
+UFC= UFC[(UFC['country'] != 'Singapore')]
+UFC= UFC[(UFC['country'] != 'Guam')]
+UFC= UFC[(UFC['country'] != 'South Africa')]
+UFC= UFC[(UFC['country'] != 'Czech Republic')]
+UFC= UFC[(UFC['country'] != 'El Salvador')]
+UFC= UFC[(UFC['country'] != 'Northern Ireland')]
+UFC= UFC[(UFC['country'] != 'Ukraine')]
+UFC= UFC[(UFC['country'] != 'Iceland')]
+UFC= UFC[(UFC['country'] != 'Italy')]
+UFC= UFC[(UFC['country'] != 'Scotland')]
+UFC= UFC[(UFC['country'] != 'Holland')]
+UFC= UFC[(UFC['country'] != 'Peru')]
+UFC= UFC[(UFC['country'] != 'China')]
+UFC= UFC[(UFC['country'] != 'Croatia')]
+UFC= UFC[(UFC['country'] != 'New Zealand')]
+UFC= UFC[(UFC['country'] != 'Denmark')]
+UFC= UFC[(UFC['country'] != 'Germany')]
+UFC= UFC[(UFC['country'] != 'Ireland')]
+UFC= UFC[(UFC['country'] != 'Belarus')]
+UFC= UFC[(UFC['country'] != 'Mexico')]
+UFC= UFC[(UFC['country'] != 'Poland')]
+UFC= UFC[(UFC['country'] != 'Sweden')]
+UFC= UFC[(UFC['country'] != 'France')]
+UFC= UFC[(UFC['country'] != 'Netherlands')]
+UFC= UFC[(UFC['country'] != 'South Korea')]
+UFC= UFC[(UFC['country'] != 'Belgium')]
+UFC= UFC[(UFC['country'] != 'Colombia')]
+UFC= UFC[(UFC['country'] != 'USA')]
+UFC= UFC[(UFC['country'] != 'Jamaica')]
+
+# Create the crosstab of number of win by type of win and country of the winners
+
+UFC_TOT = pd.crosstab(UFC['method'],UFC['country'])
+
+# Calculate the ratio of win 
+
+TOT_AUS = (UFC_TOT['Australia'][0])+(UFC_TOT['Australia'][1])+(UFC_TOT['Australia'][2])+(UFC_TOT['Australia'][3])
+TOT_BRA = (UFC_TOT['Brazil'][0])+(UFC_TOT['Brazil'][1])+(UFC_TOT['Brazil'][2])+(UFC_TOT['Brazil'][3])
+TOT_CAN = (UFC_TOT['Canada'][0])+(UFC_TOT['Canada'][1])+(UFC_TOT['Canada'][2])+(UFC_TOT['Canada'][3])
+TOT_ENG = (UFC_TOT['England'][0])+(UFC_TOT['England'][1])+(UFC_TOT['England'][2])+(UFC_TOT['England'][3])
+TOT_JAP = (UFC_TOT['Japan'][0])+(UFC_TOT['Japan'][1])+(UFC_TOT['Japan'][2])+(UFC_TOT['Japan'][3])
+TOT_RUS = (UFC_TOT['Russia'][0])+(UFC_TOT['Russia'][1])+(UFC_TOT['Russia'][2])+(UFC_TOT['Russia'][3])
+TOT_USA = (UFC_TOT['United States'][0])+(UFC_TOT['United States'][1])+(UFC_TOT['United States'][2])+(UFC_TOT['United States'][3])
+
+UFC_TOT['Australia'][0] = UFC_TOT['Australia'][0]/ TOT_AUS *100
+UFC_TOT['Australia'][1] = UFC_TOT['Australia'][1]/ TOT_AUS *100
+UFC_TOT['Australia'][2] = UFC_TOT['Australia'][2]/ TOT_AUS *100
+UFC_TOT['Australia'][3] = UFC_TOT['Australia'][3]/ TOT_AUS *100
+
+UFC_TOT['Brazil'][0] = UFC_TOT['Brazil'][0]/ TOT_BRA *100
+UFC_TOT['Brazil'][1] = UFC_TOT['Brazil'][1]/ TOT_BRA *100
+UFC_TOT['Brazil'][2] = UFC_TOT['Brazil'][2]/ TOT_BRA *100
+UFC_TOT['Brazil'][3] = UFC_TOT['Brazil'][3]/ TOT_BRA *100
+
+UFC_TOT['Canada'][0] = UFC_TOT['Canada'][0]/ TOT_CAN *100
+UFC_TOT['Canada'][1] = UFC_TOT['Canada'][1]/ TOT_CAN *100
+UFC_TOT['Canada'][2] = UFC_TOT['Canada'][2]/ TOT_CAN *100
+UFC_TOT['Canada'][3] = UFC_TOT['Canada'][3]/ TOT_CAN *100
+
+UFC_TOT['England'][0] = UFC_TOT['England'][0]/ TOT_ENG *100
+UFC_TOT['England'][1] = UFC_TOT['England'][1]/ TOT_ENG *100
+UFC_TOT['England'][2] = UFC_TOT['England'][2]/ TOT_ENG *100
+UFC_TOT['England'][3] = UFC_TOT['England'][3]/ TOT_ENG *100
+
+UFC_TOT['Japan'][0] = UFC_TOT['Japan'][0]/ TOT_JAP *100
+UFC_TOT['Japan'][1] = UFC_TOT['Japan'][1]/ TOT_JAP *100
+UFC_TOT['Japan'][2] = UFC_TOT['Japan'][2]/ TOT_JAP *100
+UFC_TOT['Japan'][3] = UFC_TOT['Japan'][3]/ TOT_JAP *100
+
+UFC_TOT['Russia'][0] = UFC_TOT['Russia'][0]/ TOT_RUS *100
+UFC_TOT['Russia'][1] = UFC_TOT['Russia'][1]/ TOT_RUS *100
+UFC_TOT['Russia'][2] = UFC_TOT['Russia'][2]/ TOT_RUS *100
+UFC_TOT['Russia'][3] = UFC_TOT['Russia'][3]/ TOT_RUS *100
+
+UFC_TOT['United States'][0] = UFC_TOT['United States'][0]/ TOT_USA *100
+UFC_TOT['United States'][1] = UFC_TOT['United States'][1]/ TOT_USA *100
+UFC_TOT['United States'][2] = UFC_TOT['United States'][2]/ TOT_USA *100
+UFC_TOT['United States'][3] = UFC_TOT['United States'][3]/ TOT_USA *100
+
+# The Crosstab is now in Rate of win 
+
+UFC_TOT.head()
+
+# Create the Scatter plot
+
+x = ['Decision', 'KO', 'Submission', 'TKO']
+y1 = [29, 12, 31, 27]
+y2 = [39, 11, 26, 22]
+y3 = [52, 9, 18, 20]
+y4 = [42, 11, 20, 25]
+y5 = [62, 5, 15, 17]
+y6 = [46, 15, 15, 23]
+y7 = [42, 12, 22, 22]
+
+plt.title("How UFC-Fighter from the most representative countries win")
+Australie = plt.scatter(x, y1, c = 'red', marker = '*')
+Brazil = plt.scatter(x, y2, c = 'yellow', marker = 's')
+Canada = plt.scatter(x, y3, c = 'green', marker = '+')
+England = plt.scatter(x, y4, c = 'cyan', marker = 'D')
+Japan = plt.scatter(x, y5, c = 'orange', marker = 'o')
+Russia = plt.scatter(x, y6, c = 'purple', marker = '.')
+US = plt.scatter(x, y7, c = 'blue', marker = 'x')
+
+plt.xlabel('Type of Win')
+plt.ylabel('Rate of Win')
+
+plt.legend((Australie,Brazil,Canada,England, Japan, Russia, US),('Australie','Brazil','Canada','England', 'Japan', 'Russia', 'US'))
+
+plt.savefig('/Users/jules/Downloads/ UFC-Fighter-rate-of-win.png')
+
+ #output Visualization on the link
         
       </p>
     </div>
