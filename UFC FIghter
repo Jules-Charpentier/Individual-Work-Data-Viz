@@ -72,7 +72,7 @@
       <!-- modify if necessary (move visualizations in separate pages) -->
       <h2 id="viz1">Visualization 1</h2>
      
-     <img src="https://raw.githubusercontent.com/Jules-Charpentier/Individual-Work-Data-Viz/master/%20UFC-Country-of-Fighter-rate-of-win.png">
+     <img src="https://raw.githubusercontent.com/Jules-Charpentier/Individual-Work-Data-Viz/master/UFC%20Graph.png">
       </img>
      
 
@@ -291,7 +291,7 @@ plt.ylabel('Rate of Win') <br/> <br/>
 
 plt.legend((Australie,Brazil,Canada,England, Japan, Russia, US),('Australian Fighter','Brazilian Fighter','Canadian Fighter','English Fighter', 'Japanese Fighter', 'Russian Fighter', 'US Fighter')) <br/> <br/>
 
-plt.savefig('/Users/jules/Downloads/ UFC-Fighter-rate-of-win.png') <br/> <br/>
+plt.savefig('/Users/jules/Downloads/ UFC-Fighter-rate-of-win.png',dpi=200) <br/> <br/>
 
  #output Visualization on the link
         
