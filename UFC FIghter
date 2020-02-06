@@ -103,192 +103,193 @@
       Robin Wilson’s blog
       OpenstreetMap
       Datacamp
-        Code :
- import numpy as np
- import pandas as pd
- from pandas import Series, DataFrame, read_html
- import matplotlib.pyplot as plt
+        Code : <br/>
+ import numpy as np <br/>
+ import pandas as pd <br/>
+ from pandas import Series, DataFrame, read_html <br/>
+ import matplotlib.pyplot as plt <br/> <br/>
  
- #Download the Data
- file="/Users/jules/Downloads/ALL UFC FIGHTERS 2_23_2016 SHERDOG.COM.xlsx"
-sheet="Sheet1"
+ #Download the Data <br/>
+ file="/Users/jules/Downloads/ALL UFC FIGHTERS 2_23_2016 SHERDOG.COM.xlsx" <br/>
+sheet="Sheet1" <br/> <br/>
 
-xl=pd.ExcelFile(file)
-UFC_Fighter=xl.parse(sheet)
+xl=pd.ExcelFile(file) <br/> <br/>
 
-file2="/Users/jules/Downloads/ALL UFC FIGHTS 2_23_2016 SHERDOG.COM.xlsx"
-sheet1="Sheet1"
+UFC_Fighter=xl.parse(sheet) <br/> <br/>
 
-xls=pd.ExcelFile(file2)
-UFC_Fights=xls.parse(sheet1)
+file2="/Users/jules/Downloads/ALL UFC FIGHTS 2_23_2016 SHERDOG.COM.xlsx" <br/>
+sheet1="Sheet1" <br/> <br/>
+
+xls=pd.ExcelFile(file2) <br/>
+UFC_Fights=xls.parse(sheet1) <br/>
  
- # Analyze the type of win and remove the useless ones 
+ # Analyze the type of win and remove the useless ones <br/> <br/>
  
- UFC_Fights['method'].value_counts()
+ UFC_Fights['method'].value_counts() <br/> <br/>
  
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'NC')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Caceres Failed Drug Test')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Overturned by Commission')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Hoffman Failed Drug Test')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Overturned by State Commission')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'DQ')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'Draw')]
- UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'Technical')]
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'NC')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Caceres Failed Drug Test')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Overturned by Commission')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Hoffman Failed Drug Test')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest - Overturned by State Commission')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'No Contest')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'DQ')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'Draw')] <br/>
+ UFC_Fights= UFC_Fights[(UFC_Fights['method'] != 'Technical')] <br/> <br/>
  
- # Remove the useless Data 
+ # Remove the useless Data <br/> <br/>
  
- del UFC_Fights['pageurl'],
-del UFC_Fights['eid'],
-del UFC_Fights['mid'],
-del UFC_Fights['event_name'],
-del UFC_Fights['event_org'],
-del UFC_Fights['event_place'],
-del UFC_Fights['f1pageurl'],
-del UFC_Fights['f2pageurl'],
-del UFC_Fights['f1result'],
-del UFC_Fights['f2result'],
-del UFC_Fights['ref'],
-del UFC_Fights['f1fid'],
-del UFC_Fights['f2fid'],
-del UFC_Fights['round'],
-del UFC_Fights['time']
+ del UFC_Fights['pageurl'], <br/>
+del UFC_Fights['eid'], <br/>
+del UFC_Fights['mid'], <br/>
+del UFC_Fights['event_name'], <br/>
+del UFC_Fights['event_org'], <br/>
+del UFC_Fights['event_place'], <br/>
+del UFC_Fights['f1pageurl'], <br/>
+del UFC_Fights['f2pageurl'], <br/>
+del UFC_Fights['f1result'], <br/>
+del UFC_Fights['f2result'], <br/>
+del UFC_Fights['ref'], <br/>
+del UFC_Fights['f1fid'], <br/>
+del UFC_Fights['f2fid'], <br/>
+del UFC_Fights['round'], <br/>
+del UFC_Fights['time'] <br/>
 
-# Rename Column in order to merge files
+# Rename Column in order to merge files <br/> <br/>
 
-UFC_Fights.rename(columns={'f1name': 'name'}, inplace=True)
-UFC = DataFrame.merge(UFC_Fights, UFC_Fighter[['name','country']],on='name', how='inner')
-DataFrame.drop_duplicates(UFC)
+UFC_Fights.rename(columns={'f1name': 'name'}, inplace=True) <br/>
+UFC = DataFrame.merge(UFC_Fights, UFC_Fighter[['name','country']],on='name', how='inner') <br/>
+DataFrame.drop_duplicates(UFC) <br/> <br/>
 
-# Have a look at the number of time a country appears and remove the ones with less than 49 fights
+# Have a look at the number of time a country appears and remove the ones with less than 49 fights <br/> <br/>
 
-UFC['country'].value_counts()
+UFC['country'].value_counts() <br/> <br/>
 
-UFC= UFC[(UFC['country'] != 'Ecuador')]
-UFC= UFC[(UFC['country'] != 'Venezuela')]
-UFC= UFC[(UFC['country'] != 'Finland')]
-UFC= UFC[(UFC['country'] != 'Cuba')]
-UFC= UFC[(UFC['country'] != 'Argentina')]
-UFC= UFC[(UFC['country'] != 'Armenia')]
-UFC= UFC[(UFC['country'] != 'Bulgaria')]
-UFC= UFC[(UFC['country'] != 'Mongolia')]
-UFC= UFC[(UFC['country'] != 'Philippines')]
-UFC= UFC[(UFC['country'] != 'Norway')]
-UFC= UFC[(UFC['country'] != 'Afghanistan')]
-UFC= UFC[(UFC['country'] != 'Chile')]
-UFC= UFC[(UFC['country'] != 'Latvia')]
-UFC= UFC[(UFC['country'] != 'Columbia')]
-UFC= UFC[(UFC['country'] != 'Iran, Islamic Republic of')]
-UFC= UFC[(UFC['country'] != 'Singapore')]
-UFC= UFC[(UFC['country'] != 'Guam')]
-UFC= UFC[(UFC['country'] != 'South Africa')]
-UFC= UFC[(UFC['country'] != 'Czech Republic')]
-UFC= UFC[(UFC['country'] != 'El Salvador')]
-UFC= UFC[(UFC['country'] != 'Northern Ireland')]
-UFC= UFC[(UFC['country'] != 'Ukraine')]
-UFC= UFC[(UFC['country'] != 'Iceland')]
-UFC= UFC[(UFC['country'] != 'Italy')]
-UFC= UFC[(UFC['country'] != 'Scotland')]
-UFC= UFC[(UFC['country'] != 'Holland')]
-UFC= UFC[(UFC['country'] != 'Peru')]
-UFC= UFC[(UFC['country'] != 'China')]
-UFC= UFC[(UFC['country'] != 'Croatia')]
-UFC= UFC[(UFC['country'] != 'New Zealand')]
-UFC= UFC[(UFC['country'] != 'Denmark')]
-UFC= UFC[(UFC['country'] != 'Germany')]
-UFC= UFC[(UFC['country'] != 'Ireland')]
-UFC= UFC[(UFC['country'] != 'Belarus')]
-UFC= UFC[(UFC['country'] != 'Mexico')]
-UFC= UFC[(UFC['country'] != 'Poland')]
-UFC= UFC[(UFC['country'] != 'Sweden')]
-UFC= UFC[(UFC['country'] != 'France')]
-UFC= UFC[(UFC['country'] != 'Netherlands')]
-UFC= UFC[(UFC['country'] != 'South Korea')]
-UFC= UFC[(UFC['country'] != 'Belgium')]
-UFC= UFC[(UFC['country'] != 'Colombia')]
-UFC= UFC[(UFC['country'] != 'USA')]
-UFC= UFC[(UFC['country'] != 'Jamaica')]
+UFC= UFC[(UFC['country'] != 'Ecuador')] <br/>
+UFC= UFC[(UFC['country'] != 'Venezuela')] <br/>
+UFC= UFC[(UFC['country'] != 'Finland')] <br/>
+UFC= UFC[(UFC['country'] != 'Cuba')] <br/>
+UFC= UFC[(UFC['country'] != 'Argentina')] <br/>
+UFC= UFC[(UFC['country'] != 'Armenia')] <br/>
+UFC= UFC[(UFC['country'] != 'Bulgaria')] <br/>
+UFC= UFC[(UFC['country'] != 'Mongolia')] <br/>
+UFC= UFC[(UFC['country'] != 'Philippines')] <br/>
+UFC= UFC[(UFC['country'] != 'Norway')] <br/>
+UFC= UFC[(UFC['country'] != 'Afghanistan')] <br/>
+UFC= UFC[(UFC['country'] != 'Chile')] <br/>
+UFC= UFC[(UFC['country'] != 'Latvia')] <br/>
+UFC= UFC[(UFC['country'] != 'Columbia')] <br/>
+UFC= UFC[(UFC['country'] != 'Iran, Islamic Republic of')] <br/>
+UFC= UFC[(UFC['country'] != 'Singapore')] <br/>
+UFC= UFC[(UFC['country'] != 'Guam')] <br/>
+UFC= UFC[(UFC['country'] != 'South Africa')] <br/>
+UFC= UFC[(UFC['country'] != 'Czech Republic')] <br/>
+UFC= UFC[(UFC['country'] != 'El Salvador')] <br/>
+UFC= UFC[(UFC['country'] != 'Northern Ireland')] <br/>
+UFC= UFC[(UFC['country'] != 'Ukraine')] <br/>
+UFC= UFC[(UFC['country'] != 'Iceland')] <br/>
+UFC= UFC[(UFC['country'] != 'Italy')] <br/>
+UFC= UFC[(UFC['country'] != 'Scotland')] <br/>
+UFC= UFC[(UFC['country'] != 'Holland')] <br/>
+UFC= UFC[(UFC['country'] != 'Peru')] <br/>
+UFC= UFC[(UFC['country'] != 'China')] <br/>
+UFC= UFC[(UFC['country'] != 'Croatia')] <br/>
+UFC= UFC[(UFC['country'] != 'New Zealand')] <br/>
+UFC= UFC[(UFC['country'] != 'Denmark')] <br/>
+UFC= UFC[(UFC['country'] != 'Germany')] <br/>
+UFC= UFC[(UFC['country'] != 'Ireland')] <br/>
+UFC= UFC[(UFC['country'] != 'Belarus')] <br/>
+UFC= UFC[(UFC['country'] != 'Mexico')] <br/>
+UFC= UFC[(UFC['country'] != 'Poland')] <br/>
+UFC= UFC[(UFC['country'] != 'Sweden')] <br/>
+UFC= UFC[(UFC['country'] != 'France')] <br/>
+UFC= UFC[(UFC['country'] != 'Netherlands')] <br/>
+UFC= UFC[(UFC['country'] != 'South Korea')] <br/>
+UFC= UFC[(UFC['country'] != 'Belgium')] <br/>
+UFC= UFC[(UFC['country'] != 'Colombia')] <br/>
+UFC= UFC[(UFC['country'] != 'USA')] <br/>
+UFC= UFC[(UFC['country'] != 'Jamaica')] <br/>
 
-# Create the crosstab of number of win by type of win and country of the winners
+# Create the crosstab of number of win by type of win and country of the winners <br/> <br/>
 
-UFC_TOT = pd.crosstab(UFC['method'],UFC['country'])
+UFC_TOT = pd.crosstab(UFC['method'],UFC['country']) <br/> <br/>
 
-# Calculate the ratio of win 
+# Calculate the ratio of win <br/> <br/>
 
-TOT_AUS = (UFC_TOT['Australia'][0])+(UFC_TOT['Australia'][1])+(UFC_TOT['Australia'][2])+(UFC_TOT['Australia'][3])
-TOT_BRA = (UFC_TOT['Brazil'][0])+(UFC_TOT['Brazil'][1])+(UFC_TOT['Brazil'][2])+(UFC_TOT['Brazil'][3])
-TOT_CAN = (UFC_TOT['Canada'][0])+(UFC_TOT['Canada'][1])+(UFC_TOT['Canada'][2])+(UFC_TOT['Canada'][3])
-TOT_ENG = (UFC_TOT['England'][0])+(UFC_TOT['England'][1])+(UFC_TOT['England'][2])+(UFC_TOT['England'][3])
-TOT_JAP = (UFC_TOT['Japan'][0])+(UFC_TOT['Japan'][1])+(UFC_TOT['Japan'][2])+(UFC_TOT['Japan'][3])
-TOT_RUS = (UFC_TOT['Russia'][0])+(UFC_TOT['Russia'][1])+(UFC_TOT['Russia'][2])+(UFC_TOT['Russia'][3])
-TOT_USA = (UFC_TOT['United States'][0])+(UFC_TOT['United States'][1])+(UFC_TOT['United States'][2])+(UFC_TOT['United States'][3])
+TOT_AUS = (UFC_TOT['Australia'][0])+(UFC_TOT['Australia'][1])+(UFC_TOT['Australia'][2])+(UFC_TOT['Australia'][3]) <br/>
+TOT_BRA = (UFC_TOT['Brazil'][0])+(UFC_TOT['Brazil'][1])+(UFC_TOT['Brazil'][2])+(UFC_TOT['Brazil'][3]) <br/>
+TOT_CAN = (UFC_TOT['Canada'][0])+(UFC_TOT['Canada'][1])+(UFC_TOT['Canada'][2])+(UFC_TOT['Canada'][3]) <br/>
+TOT_ENG = (UFC_TOT['England'][0])+(UFC_TOT['England'][1])+(UFC_TOT['England'][2])+(UFC_TOT['England'][3]) <br/>
+TOT_JAP = (UFC_TOT['Japan'][0])+(UFC_TOT['Japan'][1])+(UFC_TOT['Japan'][2])+(UFC_TOT['Japan'][3]) <br/>
+TOT_RUS = (UFC_TOT['Russia'][0])+(UFC_TOT['Russia'][1])+(UFC_TOT['Russia'][2])+(UFC_TOT['Russia'][3]) <br/>
+TOT_USA = (UFC_TOT['United States'][0])+(UFC_TOT['United States'][1])+(UFC_TOT['United States'][2])+(UFC_TOT['United States'][3]) <br/> <br/>
 
-UFC_TOT['Australia'][0] = UFC_TOT['Australia'][0]/ TOT_AUS *100
-UFC_TOT['Australia'][1] = UFC_TOT['Australia'][1]/ TOT_AUS *100
-UFC_TOT['Australia'][2] = UFC_TOT['Australia'][2]/ TOT_AUS *100
-UFC_TOT['Australia'][3] = UFC_TOT['Australia'][3]/ TOT_AUS *100
+UFC_TOT['Australia'][0] = UFC_TOT['Australia'][0]/ TOT_AUS *100 <br/>
+UFC_TOT['Australia'][1] = UFC_TOT['Australia'][1]/ TOT_AUS *100 <br/>
+UFC_TOT['Australia'][2] = UFC_TOT['Australia'][2]/ TOT_AUS *100 <br/>
+UFC_TOT['Australia'][3] = UFC_TOT['Australia'][3]/ TOT_AUS *100 <br/> <br/>
 
-UFC_TOT['Brazil'][0] = UFC_TOT['Brazil'][0]/ TOT_BRA *100
-UFC_TOT['Brazil'][1] = UFC_TOT['Brazil'][1]/ TOT_BRA *100
-UFC_TOT['Brazil'][2] = UFC_TOT['Brazil'][2]/ TOT_BRA *100
-UFC_TOT['Brazil'][3] = UFC_TOT['Brazil'][3]/ TOT_BRA *100
+UFC_TOT['Brazil'][0] = UFC_TOT['Brazil'][0]/ TOT_BRA *100 <br/>
+UFC_TOT['Brazil'][1] = UFC_TOT['Brazil'][1]/ TOT_BRA *100 <br/>
+UFC_TOT['Brazil'][2] = UFC_TOT['Brazil'][2]/ TOT_BRA *100 <br/>
+UFC_TOT['Brazil'][3] = UFC_TOT['Brazil'][3]/ TOT_BRA *100 <br/> <br/>
 
-UFC_TOT['Canada'][0] = UFC_TOT['Canada'][0]/ TOT_CAN *100
-UFC_TOT['Canada'][1] = UFC_TOT['Canada'][1]/ TOT_CAN *100
-UFC_TOT['Canada'][2] = UFC_TOT['Canada'][2]/ TOT_CAN *100
-UFC_TOT['Canada'][3] = UFC_TOT['Canada'][3]/ TOT_CAN *100
+UFC_TOT['Canada'][0] = UFC_TOT['Canada'][0]/ TOT_CAN *100 <br/>
+UFC_TOT['Canada'][1] = UFC_TOT['Canada'][1]/ TOT_CAN *100 <br/>
+UFC_TOT['Canada'][2] = UFC_TOT['Canada'][2]/ TOT_CAN *100 <br/>
+UFC_TOT['Canada'][3] = UFC_TOT['Canada'][3]/ TOT_CAN *100 <br/> <br/>
 
-UFC_TOT['England'][0] = UFC_TOT['England'][0]/ TOT_ENG *100
-UFC_TOT['England'][1] = UFC_TOT['England'][1]/ TOT_ENG *100
-UFC_TOT['England'][2] = UFC_TOT['England'][2]/ TOT_ENG *100
-UFC_TOT['England'][3] = UFC_TOT['England'][3]/ TOT_ENG *100
+UFC_TOT['England'][0] = UFC_TOT['England'][0]/ TOT_ENG *100 <br/>
+UFC_TOT['England'][1] = UFC_TOT['England'][1]/ TOT_ENG *100 <br/>
+UFC_TOT['England'][2] = UFC_TOT['England'][2]/ TOT_ENG *100 <br/>
+UFC_TOT['England'][3] = UFC_TOT['England'][3]/ TOT_ENG *100 <br/> <br/>
 
-UFC_TOT['Japan'][0] = UFC_TOT['Japan'][0]/ TOT_JAP *100
-UFC_TOT['Japan'][1] = UFC_TOT['Japan'][1]/ TOT_JAP *100
-UFC_TOT['Japan'][2] = UFC_TOT['Japan'][2]/ TOT_JAP *100
-UFC_TOT['Japan'][3] = UFC_TOT['Japan'][3]/ TOT_JAP *100
+UFC_TOT['Japan'][0] = UFC_TOT['Japan'][0]/ TOT_JAP *100 <br/>
+UFC_TOT['Japan'][1] = UFC_TOT['Japan'][1]/ TOT_JAP *100 <br/>
+UFC_TOT['Japan'][2] = UFC_TOT['Japan'][2]/ TOT_JAP *100 <br/>
+UFC_TOT['Japan'][3] = UFC_TOT['Japan'][3]/ TOT_JAP *100 <br/> <br/>
 
-UFC_TOT['Russia'][0] = UFC_TOT['Russia'][0]/ TOT_RUS *100
-UFC_TOT['Russia'][1] = UFC_TOT['Russia'][1]/ TOT_RUS *100
-UFC_TOT['Russia'][2] = UFC_TOT['Russia'][2]/ TOT_RUS *100
-UFC_TOT['Russia'][3] = UFC_TOT['Russia'][3]/ TOT_RUS *100
+UFC_TOT['Russia'][0] = UFC_TOT['Russia'][0]/ TOT_RUS *100 <br/>
+UFC_TOT['Russia'][1] = UFC_TOT['Russia'][1]/ TOT_RUS *100 <br/>
+UFC_TOT['Russia'][2] = UFC_TOT['Russia'][2]/ TOT_RUS *100 <br/>
+UFC_TOT['Russia'][3] = UFC_TOT['Russia'][3]/ TOT_RUS *100 <br/> <br/>
 
-UFC_TOT['United States'][0] = UFC_TOT['United States'][0]/ TOT_USA *100
-UFC_TOT['United States'][1] = UFC_TOT['United States'][1]/ TOT_USA *100
-UFC_TOT['United States'][2] = UFC_TOT['United States'][2]/ TOT_USA *100
-UFC_TOT['United States'][3] = UFC_TOT['United States'][3]/ TOT_USA *100
+UFC_TOT['United States'][0] = UFC_TOT['United States'][0]/ TOT_USA *100 <br/>
+UFC_TOT['United States'][1] = UFC_TOT['United States'][1]/ TOT_USA *100 <br/>
+UFC_TOT['United States'][2] = UFC_TOT['United States'][2]/ TOT_USA *100 <br/>
+UFC_TOT['United States'][3] = UFC_TOT['United States'][3]/ TOT_USA *100 <br/>
 
-# The Crosstab is now in Rate of win 
+# The Crosstab is now in Rate of win <br/> <br/>
 
-UFC_TOT.head()
+UFC_TOT.head() <br/> <br/>
 
-# Create the Scatter plot
+# Create the Scatter plot <br/> <br/>
 
-x = ['Decision', 'KO', 'Submission', 'TKO']
-y1 = [29, 12, 31, 27]
-y2 = [39, 11, 26, 22]
-y3 = [52, 9, 18, 20]
-y4 = [42, 11, 20, 25]
-y5 = [62, 5, 15, 17]
-y6 = [46, 15, 15, 23]
-y7 = [42, 12, 22, 22]
+x = ['Decision', 'KO', 'Submission', 'TKO'] <br/>
+y1 = [29, 12, 31, 27] <br/>
+y2 = [39, 11, 26, 22] <br/>
+y3 = [52, 9, 18, 20] <br/>
+y4 = [42, 11, 20, 25] <br/>
+y5 = [62, 5, 15, 17] <br/>
+y6 = [46, 15, 15, 23] <br/>
+y7 = [42, 12, 22, 22] <br/> <br/>
 
-plt.title("How UFC-Fighter from the most representative countries win")
-Australie = plt.scatter(x, y1, c = 'red', marker = '*')
-Brazil = plt.scatter(x, y2, c = 'yellow', marker = 's')
-Canada = plt.scatter(x, y3, c = 'green', marker = '+')
-England = plt.scatter(x, y4, c = 'cyan', marker = 'D')
-Japan = plt.scatter(x, y5, c = 'orange', marker = 'o')
-Russia = plt.scatter(x, y6, c = 'purple', marker = '.')
-US = plt.scatter(x, y7, c = 'blue', marker = 'x')
+plt.title("How UFC-Fighter from the most representative countries win") <br/>
+Australie = plt.scatter(x, y1, c = 'red', marker = '*') <br/>
+Brazil = plt.scatter(x, y2, c = 'yellow', marker = 's') <br/>
+Canada = plt.scatter(x, y3, c = 'green', marker = '+') <br/>
+England = plt.scatter(x, y4, c = 'cyan', marker = 'D') <br/>
+Japan = plt.scatter(x, y5, c = 'orange', marker = 'o') <br/>
+Russia = plt.scatter(x, y6, c = 'purple', marker = '.') <br/>
+US = plt.scatter(x, y7, c = 'blue', marker = 'x') <br/> <br/>
 
-plt.xlabel('Type of Win')
-plt.ylabel('Rate of Win')
+plt.xlabel('Type of Win') <br/>
+plt.ylabel('Rate of Win') <br/> <br/>
 
-plt.legend((Australie,Brazil,Canada,England, Japan, Russia, US),('Australie','Brazil','Canada','England', 'Japan', 'Russia', 'US'))
+plt.legend((Australie,Brazil,Canada,England, Japan, Russia, US),('Australian Fighter','Brazilian Fighter','Canadian Fighter','English Fighter', 'Japanese Fighter', 'Russian Fighter', 'US Fighter')) <br/> <br/>
 
-plt.savefig('/Users/jules/Downloads/ UFC-Fighter-rate-of-win.png')
+plt.savefig('/Users/jules/Downloads/ UFC-Fighter-rate-of-win.png') <br/> <br/>
 
  #output Visualization on the link
         
