@@ -103,9 +103,9 @@
       To Download Data : <br/>
       Data World site <br/>
       Reddit Data set site <br/>
-      For Cross TAB : https://www.stat4decision.com/fr/tri-croise-r-python/ <br/>
+      For Cross TAB : https://www.stat4decision.com/fr/tri-croise-r-python/ <br/> <br/> 
       
-        Code : <br/>
+        Code : <br/> <br/> 
  import numpy as np <br/>
  import pandas as pd <br/>
  from pandas import Series, DataFrame, read_html <br/>
