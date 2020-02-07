@@ -269,13 +269,13 @@ UFC_TOT.head() <br/> <br/>
 # Create the Scatter plot <br/> <br/>
 
 x = ['Decision', 'KO', 'Submission', 'TKO'] <br/>
-y1 = [29, 12, 31, 27] <br/>
-y2 = [39, 11, 26, 22] <br/>
-y3 = [52, 9, 18, 20] <br/>
-y4 = [42, 11, 20, 25] <br/>
-y5 = [62, 5, 15, 17] <br/>
-y6 = [46, 15, 15, 23] <br/>
-y7 = [42, 12, 22, 22] <br/> <br/>
+y1 = [UFC_TOT['Australia'][0] , UFC_TOT['Australia'][1], UFC_TOT['Australia'][2], UFC_TOT['Australia'][3]] <br/>
+y2 = [UFC_TOT['Brazil'][0] , UFC_TOT['Brazil'][1], UFC_TOT['Brazil'][2], UFC_TOT['Brazil'][3]] <br/>
+y3 = [UFC_TOT['Canada'][0] , UFC_TOT['Canada'][1], UFC_TOT['Canada'][2], UFC_TOT['Canada'][3]] <br/>
+y4 = [UFC_TOT['England'][0] , UFC_TOT['England'][1], UFC_TOT['England'][2], UFC_TOT['England'][3]] <br/>
+y5 = [UFC_TOT['Japan'][0] , UFC_TOT['Japan'][1], UFC_TOT['Japan'][2], UFC_TOT['Japan'][3]] <br/>
+y6 = [UFC_TOT['Russia'][0] , UFC_TOT['Russia'][1], UFC_TOT['Russia'][2], UFC_TOT['Russia'][3]] <br/>
+y7 = [UFC_TOT['United States'][0] , UFC_TOT['United States'][1], UFC_TOT['United States'][2], UFC_TOT['United States'][3]] <br/> <br/>
 
 plt.title("How UFC-Fighter from the most representative countries win") <br/>
 Australie = plt.scatter(x, y1, c = 'red', marker = '*') <br/>
