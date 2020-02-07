@@ -219,13 +219,13 @@ UFC_TOT = pd.crosstab(UFC['method'],UFC['country']) <br/> <br/>
 
 # Calculate the ratio of win <br/> <br/>
 
-TOT_AUS = (UFC_TOT['Australia'][0])+(UFC_TOT['Australia'][1])+(UFC_TOT['Australia'][2])+(UFC_TOT['Australia'][3]) <br/>
-TOT_BRA = (UFC_TOT['Brazil'][0])+(UFC_TOT['Brazil'][1])+(UFC_TOT['Brazil'][2])+(UFC_TOT['Brazil'][3]) <br/>
-TOT_CAN = (UFC_TOT['Canada'][0])+(UFC_TOT['Canada'][1])+(UFC_TOT['Canada'][2])+(UFC_TOT['Canada'][3]) <br/>
-TOT_ENG = (UFC_TOT['England'][0])+(UFC_TOT['England'][1])+(UFC_TOT['England'][2])+(UFC_TOT['England'][3]) <br/>
-TOT_JAP = (UFC_TOT['Japan'][0])+(UFC_TOT['Japan'][1])+(UFC_TOT['Japan'][2])+(UFC_TOT['Japan'][3]) <br/>
-TOT_RUS = (UFC_TOT['Russia'][0])+(UFC_TOT['Russia'][1])+(UFC_TOT['Russia'][2])+(UFC_TOT['Russia'][3]) <br/>
-TOT_USA = (UFC_TOT['United States'][0])+(UFC_TOT['United States'][1])+(UFC_TOT['United States'][2])+(UFC_TOT['United States'][3]) <br/> <br/>
+TOT_AUS = np.sum(UFC_TOT['Australia'][0:4])<br/> 
+TOT_BRA = np.sum(UFC_TOT['Brazil'][0:4]) <br/> 
+TOT_CAN = np.sum(UFC_TOT['Canada'][0:4]) <br/> 
+TOT_ENG = np.sum(UFC_TOT['England'][0:4]) <br/> 
+TOT_JAP = np.sum(UFC_TOT['Japan'][0:4]) <br/> 
+TOT_RUS = np.sum(UFC_TOT['Russia'][0:4]) <br/> 
+TOT_USA = np.sum(UFC_TOT['United States'][0:4]) <br/> <br/>
 
 UFC_TOT['Australia'][0] = UFC_TOT['Australia'][0]/ TOT_AUS *100 <br/>
 UFC_TOT['Australia'][1] = UFC_TOT['Australia'][1]/ TOT_AUS *100 <br/>
